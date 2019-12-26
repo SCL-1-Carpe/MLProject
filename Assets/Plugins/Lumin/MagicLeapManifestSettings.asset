@@ -88,3 +88,5 @@ MonoBehaviour:
     enabled: 0
   - name: VoiceInput
     enabled: 0
+  - name: WorldReconstruction
+    enabled: 0
