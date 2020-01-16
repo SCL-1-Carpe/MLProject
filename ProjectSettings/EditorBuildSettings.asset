@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MainScene.unity
+    path: Assets/NVIDIA/Flex Samples/Scenes/MainScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: a15216d94d0c9bd44be3a8c5d4ec0c5e,
