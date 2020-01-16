@@ -1,0 +1,31 @@
+﻿<Properties StartupConfiguration="{047566C8-1683-1E7A-97FC-8F43D2032447}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/NVIDIA/Flex/Assets/FlexContainer.cs">
+    <Files>
+      <File FileName="Assets/NVIDIA/Flex/Assets/FlexContainer.cs" Line="503" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="MLProject" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="NVIDIA" expanded="True">
+                <Node name="Flex" expanded="True">
+                  <Node name="Assets" expanded="True">
+                    <Node name="FlexContainer.cs" selected="True" />
+                  </Node>
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="d0f81198-d17a-4a7e-a318-6e94805fcf87" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
