@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MainScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    path: Assets/MagicLeap/Examples/Scenes/Planes.unity
+    guid: 5fca2d94f0384ff42b981955c16012ef
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: a15216d94d0c9bd44be3a8c5d4ec0c5e,
       type: 2}

@@ -134,6 +134,7 @@ namespace UnityEngine.XR.MagicLeap
                 MLHandMeshing.RequestHandMesh(HandMeshRequestCallback);
                 _hasPendingRequest = true;
             }
+            
         }
         #endregion
 

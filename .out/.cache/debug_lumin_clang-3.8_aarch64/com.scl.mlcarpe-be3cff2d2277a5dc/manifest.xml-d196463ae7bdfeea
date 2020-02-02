@@ -1,0 +1,10 @@
+<manifest xmlns:ml="magicleap" ml:developer_id="fb92dac7-594c-4f4d-bb4f-1c11d21321be" ml:package="com.scl.mlcarpe" ml:version_code="1" ml:version_name="">
+  <application ml:min_api_level="4" ml:sdk_version="1.0" ml:visible_name="SCL_ML_Carpe">
+    <component ml:binary_name="bin/Player.elf" ml:name=".fullscreen" ml:type="Fullscreen" ml:visible_name="SCL_ML_Carpe">
+      <icon ml:model_folder="Icon/Model" ml:portal_folder="Icon/Portal" />
+    </component>
+    <uses-privilege ml:name="LowLatencyLightwear" />
+    <uses-privilege ml:name="GesturesConfig" />
+    <uses-privilege ml:name="GesturesSubscribe" />
+  </application>
+</manifest>

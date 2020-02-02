@@ -633,7 +633,7 @@ PlayerSettings:
     m_ModelFolderPath: 
     m_PortalFolderPath: 
   luminCert:
-    m_CertPath: /Volumes/TSSS01/MLProject/Assets/MagicLeap/tmcs01.cert
+    m_CertPath: C:/Users/kaiba/Documents/Unity Projects/MLProject/privatekey/testcert1.cert
     m_SignPackage: 1
   luminIsChannelApp: 0
   luminVersion:
