@@ -14,6 +14,7 @@ public class NetworkManager_Client : MonoBehaviour
     UdpClient OwnUdpClient;
     TcpClient OwnTcpSocket;
     public bool LaunchOnStart;
+    byte NetworkId;
     [SerializeField]
     int TcpPortNum = 7890, UdpPortNum = 7891;
     /// <summary>
@@ -94,6 +95,11 @@ public class NetworkManager_Client : MonoBehaviour
     public void RequestCreatingNewAutonomousObject(ReplicatiorBase replicatior, string ReplicatedPrefabName, Vector3 pos, Vector3 eular, string ParentName)
     {
         OwnTcpSocket.Client.Send(encoding.GetBytes("NewAutoObj," + ReplicatedPrefabName + "," + replicatior.gameObject.name + "," + Serializer.Vector3ToString(pos) + "," + Serializer.Vector3ToString(eular) + "," + ParentName));
+    }
+
+    public void RequestRPCOnServer(string ServerObjectName, string MethodName, string arg)
+    {
+        OwnTcpSocket.Client.Send(encoding.GetBytes("RPCOS" + "," + ServerObjectName + "," + MethodName + "," + arg));
     }
 
     void AddNewReplicatedObject(ReplicatiorBase replicatior, int Id)

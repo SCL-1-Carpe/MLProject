@@ -6,6 +6,7 @@ public class ReplicatiorBase : MonoBehaviour
 {
     public bool HasOwnership = false;
     public int Id = -1;
+    public string RepPrefabName;
     // Start is called before the first frame update
     void Start()
     {

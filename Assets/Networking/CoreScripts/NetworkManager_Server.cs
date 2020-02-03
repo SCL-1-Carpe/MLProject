@@ -26,6 +26,8 @@ public struct ClientDataContainer
 
 public class NetworkManager_Server : MonoBehaviour
 {
+    public static NetworkManager_Server server;
+
     public IPAddress OwnIP;
     public string DOwnIP;
     TcpListener listener;
@@ -76,7 +78,7 @@ public class NetworkManager_Server : MonoBehaviour
         listener.Start();
         System.IAsyncResult result = listener.BeginAcceptTcpClient(AcceptedClientCallback, listener);
         UdpSocket = new UdpClient(UdpPortNum);
-
+        server = this;
     }
 
     void AcceptedClientCallback(System.IAsyncResult ar)
@@ -86,7 +88,16 @@ public class NetworkManager_Server : MonoBehaviour
         ClientDataContainer c = new ClientDataContainer() { TcpSocket = client, address = ((IPEndPoint)client.Client.RemoteEndPoint).Address, AutonomousObjects = new List<ReplicatiorBase>() };
         Debug.Log("Client IPAddress : " + c.address);
         ClientDataList.Add(c);
-
+        if (RepObjects.Count > 0)
+        {
+            string InitRepData = "";
+            RepObjects.ForEach((obj) =>
+            {
+                InitRepData += "NewRepObj" + "," + obj.RepPrefabName + "," + Serializer.Vector3ToString(obj.transform.position) + "," + 
+                Serializer.Vector3ToString(obj.transform.eulerAngles) + "," + obj.transform.parent.gameObject.name + "," + obj.Id + "$";
+            });
+            client.Client.Send(encoding.GetBytes(InitRepData));
+        }
     }
 
     void ClientDisconnected()
@@ -94,16 +105,17 @@ public class NetworkManager_Server : MonoBehaviour
 
     }
 
-    void RegistNewReplicationObject(ReplicatiorBase replicatior)
+    void RegistNewReplicationObject(ReplicatiorBase replicatior, string PrefabName)
     {
         RepObjects.Add(replicatior);
         replicatior.Id = ObjIdBuffer;
+        replicatior.RepPrefabName = PrefabName;
         RepObjPairs.Add(ObjIdBuffer++, replicatior);
     }
 
-    void RegistNewAutonomousObject(ClientDataContainer client, ReplicatiorBase replicatior)
+    void RegistNewAutonomousObject(ClientDataContainer client, ReplicatiorBase replicatior, string PrefabName)
     {
-        RegistNewReplicationObject(replicatior);
+        RegistNewReplicationObject(replicatior, PrefabName);
         client.AutonomousObjects.Add(replicatior);
     }
 
@@ -155,6 +167,9 @@ public class NetworkManager_Server : MonoBehaviour
             case "NewAutoObj":
                 CreateAutonomousPrefab(vs[1], vs[2], Serializer.StringToVector3(vs[3], vs[4], vs[5]), Serializer.StringToVector3(vs[6], vs[7], vs[8]), vs[9], client);
                 break;
+            case "RPCOS": //RPC On Server
+                ProcessRPC(vs[1], vs[2], vs[3]);
+                break;
         }
     }
 
@@ -202,13 +217,21 @@ public class NetworkManager_Server : MonoBehaviour
             Destroy(obj);
             return null;
         }
-
-        RegistNewReplicationObject(replicatior);
+        RegistNewReplicationObject(replicatior, PrefabName);
         ClientDataList.ForEach((c) =>
         {
             c.TcpSocket.Client.Send(encoding.GetBytes("NewRepObj" + "," + PrefabName + "," + Serializer.Vector3ToString(pos) + "," + Serializer.Vector3ToString(eular) + "," + ParentObjName + "," + replicatior.Id));
         });
         return obj;
+    }
+
+    public void StartReplicateObject(ReplicatiorBase replicatior, string RepPrefabName)
+    {
+        RegistNewReplicationObject(replicatior, RepPrefabName);
+        ClientDataList.ForEach((c) =>
+        {
+            c.TcpSocket.Client.Send(encoding.GetBytes("NewRepObj" + "," + RepPrefabName + "," + Serializer.Vector3ToString(replicatior.transform.position) + "," + Serializer.Vector3ToString(replicatior.transform.eulerAngles) + "," + replicatior.transform.parent.gameObject.name + "," + replicatior.Id));
+        });
     }
 
     void CreateAutonomousPrefab(string PrefabName, string ObjName, Vector3 pos, Vector3 eular, string ParentObjName, ClientDataContainer Owner)
@@ -227,7 +250,7 @@ public class NetworkManager_Server : MonoBehaviour
             return;
         }
 
-        RegistNewAutonomousObject(Owner, replicatior);
+        RegistNewAutonomousObject(Owner, replicatior, PrefabName);
         ClientDataList.ForEach((c) =>
         {
             if (c.TcpSocket != Owner.TcpSocket)
@@ -235,6 +258,17 @@ public class NetworkManager_Server : MonoBehaviour
             else
                 c.TcpSocket.Client.Send(encoding.GetBytes("AutoObjAdded," + ObjName + "," + replicatior.Id));
         });
+    }
+
+    void ProcessRPC(string ObjName, string MethodName, string value)
+    {
+        GameObject obj = GameObject.Find(ObjName);
+        if (obj == null)
+        {
+            Debug.Log("Object couldnt find. RPC failed");
+            return;
+        }
+        obj.SendMessage(MethodName, value, SendMessageOptions.DontRequireReceiver);
     }
 
     void Update()
